@@ -1,0 +1,15 @@
+.logoPane{
+  position: fixed;
+  /*position: absolute;*/
+  top: 0px;
+  left:0px;
+  bottom: 0px;
+  /*background: #39C000;*/
+  background: teal;
+  z-index: 99;
+  /*width: 300px;*/
+}
+
+html, body{
+  background: white;
+}
