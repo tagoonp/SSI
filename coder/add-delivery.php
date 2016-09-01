@@ -70,10 +70,10 @@ $result = $db->select($strSQL, false, true);
                         <?php include "componants/menu-3.php"; ?>
                         <!-- End drawer navigation -->
 
-                        <div class="drawer-footer">
+                        <!-- <div class="drawer-footer">
                             <p class="copyright">AppUI Template &copy;</p>
                             <a href="https://shapebootstrap.net/item/1525731-appui-admin-frontend-template/?ref=rustheme" target="_blank" rel="nofollow">Purchase a license</a>
-                        </div>
+                        </div> -->
                     </div>
                     <!-- End drawer scroll area -->
                 </aside>
@@ -126,7 +126,11 @@ $result = $db->select($strSQL, false, true);
                   }
 
                 }else{
-                  include "page/insert-delivery.php";
+                  if($info['confirm_status']==1){
+                    include "page/nodata.php";
+                  }else{
+                    include "page/insert-delivery.php";
+                  }
                 }
                 ?>
 
@@ -142,6 +146,10 @@ $result = $db->select($strSQL, false, true);
 
         <?php
         include "componants/medal-ba.php";
+        ?>
+
+        <?php
+        include "componants/medal-ba-add.php";
         ?>
 
 

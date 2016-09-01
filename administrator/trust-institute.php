@@ -113,13 +113,14 @@ include "../dist/function/checkuser.inc.php";
                                       <tr>
                                           <th class="text-center"></th>
                                           <th class="hidden-xs">Institute / Hospital / Facility's name</th>
-                                          <th class="text-center" style="width: 10%;">Actions</th>
+                                          <th class="text-left" >Status</th>
+                                          <th class="text-left">By</th>
                                           <th class="text-center" style="width: 10%;">Actions</th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                     <?php
-                                    $strSQL = sprintf("SELECT ti_institute fname FROM fmn1_trust_institute  where ti_institute != '' group by ti_institute order by ti_institute");
+                                    $strSQL = sprintf("SELECT * FROM ti_institute  where ti_status = 'NA' ");
                                     $resultRecord = $db->select($strSQL,false,true);
 
                                     if($resultRecord){
@@ -129,16 +130,27 @@ include "../dist/function/checkuser.inc.php";
                                         <tr>
                                             <td class="text-center"><?php print $c;?></td>
                                             <td class="font-500">
-                                              <?php print $value['fname']; ?>
+                                              <?php print $value['ti_name']; ?>
                                               </span>
                                             </td>
-                                            <td class="font-500">
-                                              <?php print $value['fname']; ?>
-                                              </span>
+                                            <td class="font-500 col-sm-2">
+                                              <?php
+                                              switch($value['ti_status']){
+                                                case 'NA': print "N/A"; break;
+                                                case 'Allow': print "Trusted"; break;
+                                                default: print "Not trust";
+                                              }
+                                              ?>
+                                            </td>
+                                            <td>
+                                              <?php
+                                              if($value['ti_by']==''){ print "-"; }else{ print $value['ti_by'];}
+                                              ?>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group">
-                                                    <button class="btn btn-xs btn-app-blue" type="button" data-toggle="tooltip" title="Edit account" onclick="changepage('user-update.php?user_id=<?php print $value['username'];?>')"><i class="ion-edit"></i></button>
+                                                    <button class="btn btn-xs btn-app-blue" type="button" data-toggle="tooltip" title="Trust this institute" onclick="changepage('controller/ti-toggle.php?ti_id=<?php print $value['ti_id'];?>&to=1')"><i class="ion-android-done"></i></button>
+                                                    <button class="btn btn-xs btn-app-red" type="button" data-toggle="tooltip" title="Not trust this institute" onclick="changepage('controller/ti-toggle.php?ti_id=<?php print $value['ti_id'];?>&to=2')"><i class="ion-android-close"></i></button>
                                                 </div>
                                             </td>
                                         </tr>

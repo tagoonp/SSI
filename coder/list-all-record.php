@@ -89,7 +89,7 @@ include "../dist/function/checkuser.inc.php";
 
                             <div class="collapse navbar-collapse" id="header-navbar-collapse">
                                 <!-- Header search form -->
-                                <form class="navbar-form navbar-left app-search-form" role="search">
+                                <!-- <form class="navbar-form navbar-left app-search-form" role="search">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <input class="form-control" type="search" id="search-input" placeholder="Patient's keyword" />
@@ -98,7 +98,7 @@ include "../dist/function/checkuser.inc.php";
                               							</span>
                                         </div>
                                     </div>
-                                </form>
+                                </form> -->
 
                                 <!-- .navbar-left -->
                                 <?php include "componants/nav-left.php"; ?>
@@ -127,7 +127,7 @@ include "../dist/function/checkuser.inc.php";
                               </div>
                               <div class="card-block" style="padding-top: 30px;">
                                 <div class="alert alert-info">
-                                  <p><strong>Note!</strong> Tis will display only last 3,000 record. If you want to view more or specifig data please go to search page.</p>
+                                  <p><strong>Note!</strong> Tis will display only last 1,000 record. If you want to view more or specifig data please go to search page.</p>
                                 </div>
                                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full">
                                     <thead>
@@ -142,7 +142,7 @@ include "../dist/function/checkuser.inc.php";
                                     </thead>
                                     <tbody>
                                       <?php
-                                      $strSQL = sprintf("SELECT * FROM ".$tbprefix."registerrecord WHERE username in (SELECT a.username FROM ".$tbprefix."useraccount a inner join ".$tbprefix."userdescription b on a.username = b.username WHERE b.institute_id = '%s') ORDER BY date_adm DESC LIMIT 0, 3000", mysql_real_escape_string($valueUserinfo['institute_id']));
+                                      $strSQL = sprintf("SELECT * FROM ".$tbprefix."registerrecord WHERE username in (SELECT a.username FROM ".$tbprefix."useraccount a inner join ".$tbprefix."userdescription b on a.username = b.username WHERE b.institute_id = '%s') ORDER BY date_adm DESC LIMIT 0, 1000", mysql_real_escape_string($valueUserinfo['institute_id']));
                                       $result = $db->select($strSQL,false,true);
 
                                       if($result){
@@ -163,9 +163,20 @@ include "../dist/function/checkuser.inc.php";
                                                ?></td>
                                               <td class="text-center">
                                                   <div class="btn-group">
-                                                      <button class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="View"><i class="ion-search"></i></button>
-                                                      <button class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="Edit Client"><i class="ion-edit"></i></button>
+                                                    <?php
+                                                    if($value['confirm_status']=='0'){
+                                                      ?>
+                                                      <button class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="View" onclick="createsession('<?php print $value['record_id'];?>')""><i class="ion-search"></i></button>
+                                                      <button class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="Edit Client"  onclick="createsession('<?php print $value['record_id'];?>')"><i class="ion-edit"></i></button>
                                                       <button class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="Remove Client"><i class="ion-close"></i></button>
+                                                      <?php
+                                                    }else{
+                                                      ?>
+                                                      <button class="btn btn-xs btn-default" type="button" data-toggle="tooltip" title="View" onclick="createsession('<?php print $value['record_id'];?>')"><i class="ion-search"></i></button>
+                                                      <?php
+                                                    }
+                                                    ?>
+
                                                   </div>
                                               </td>
                                           </tr>

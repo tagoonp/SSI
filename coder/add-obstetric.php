@@ -35,7 +35,7 @@ $result = $db->select($strSQL, false, true);
         <link rel="icon" href="../assets/img/favicons/favicon.ico" />
 
         <!-- Google fonts -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,900%7CRoboto+Slab:300,400%7CRoboto+Mono:400" />
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,900%7CRoboto+Slab:300,400%7CRoboto+Mono:400" />
 
         <!-- Page JS Plugins CSS -->
         <link rel="stylesheet" href="../assets/js/plugins/slick/slick.min.css" />
@@ -123,7 +123,11 @@ $result = $db->select($strSQL, false, true);
                     include "page/update-obstetric.php";
                   }
                 }else{
-                  include "page/insert-obstetric.php";
+                  if($resultCheck[0]['confirm_status']==1){
+                    include "page/nodata.php";
+                  }else{
+                    include "page/insert-obstetric.php";
+                  }
                 }
                 ?>
 

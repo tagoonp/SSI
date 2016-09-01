@@ -2,6 +2,7 @@
 $strSQL = sprintf("SELECT count(*) total FROM ".$tbprefix."registerrecord a inner join ".$tbprefix."complication_delivery b
           on a.record_id = b.record_id
           WHERE
+          (a.date_adm between '".$start_date."' and '".$end_date."') AND 
           a.confirm_status = 1
           AND a.username in (SELECT a.username FROM ".$tbprefix."useraccount a inner join ".$tbprefix."userdescription b on a.username = b.username WHERE b.institute_id = '%s')
           AND b.md = '1'", mysql_real_escape_string($valueUserinfo['institute_id']));

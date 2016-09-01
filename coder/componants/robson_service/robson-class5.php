@@ -29,6 +29,6 @@ $result = $db->select($strSQL,false,true);
 if($result){
   print number_format(sizeof($result));
 }else{
-  print "-";
+  print "0";
 }
 ?>

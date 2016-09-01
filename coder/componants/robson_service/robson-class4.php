@@ -35,6 +35,6 @@ if($result){
   print number_format(sizeof($result));
   // $totalRob4 = number_format(sizeof($result));
 }else{
-  print "-";
+  print "0";
 }
 ?>

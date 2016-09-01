@@ -748,6 +748,7 @@ $totalAOD = 0;
 
 
         <!-- Page JS Plugins -->
+        <script src="../library/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 
         <!-- Page JS Code -->

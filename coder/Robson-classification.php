@@ -4,13 +4,28 @@ include "../database/database.class.php";
 include "../dist/function/session.inc.php";
 include "../dist/function/checkuser.inc.php";
 
-// $start_date = date('Y')."-01-01";
-$start_date = "2015-01-01";
-// $end_date = date('Y-m')."-31";
-$end_date = "2015-12-31";
+// // $start_date = date('Y')."-01-01";
+// $start_date = "2015-01-01";
+// // $end_date = date('Y-m')."-31";
+// $end_date = "2015-12-31";
+//
+// if(isset($_GET['startdate'])){ $start_date = $_GET['startdate']; }
+// if(isset($_GET['enddate'])){ $end_date = $_GET['enddate']; }
 
-if(isset($_GET['startdate'])){ $start_date = $_GET['startdate']; }
-if(isset($_GET['enddate'])){ $end_date = $_GET['enddate']; }
+$start_date = date('Y-m')."-01";
+$end_date = date('Y-m')."-31";
+
+if(isset($_GET['start'])){
+  if($_GET['start']!=''){
+    $start_date = $_GET['start'];
+  }
+}
+
+if(isset($_GET['end'])){
+  if($_GET['end']!=''){
+    $end_date = $_GET['end'];
+  }
+}
 
 $totalRob2 = 0; $totalRob4 = 0;
 ?>
@@ -92,13 +107,13 @@ $totalRob2 = 0; $totalRob4 = 0;
                         					<span class="icon-bar"></span>
                         				</button>
                                 <span class="navbar-page-title">
-                        					Dashboard
+                        					Robson's classification system
                         				</span>
                             </div>
 
                             <div class="collapse navbar-collapse" id="header-navbar-collapse">
                                 <!-- Header search form -->
-                                <form class="navbar-form navbar-left app-search-form" role="search">
+                                <!-- <form class="navbar-form navbar-left app-search-form" role="search">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <input class="form-control" type="search" id="search-input" placeholder="Patient's keyword" />
@@ -107,7 +122,7 @@ $totalRob2 = 0; $totalRob4 = 0;
                               							</span>
                                         </div>
                                     </div>
-                                </form>
+                                </form> -->
 
                                 <!-- .navbar-left -->
                                 <?php include "componants/nav-left.php"; ?>
@@ -126,59 +141,61 @@ $totalRob2 = 0; $totalRob4 = 0;
                     <!-- Page Content -->
                     <div class="container-fluid p-y-md">
                         <!-- .row -->
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="card">
+                              <div class="card-header bg-teal bg-inverse">
+                                  <h4><i class="fa fa-search"></i> Filter</h4>
+                                  <ul class="card-actions">
+                                      <li>
+                                          <button type="button" data-toggle="card-action" data-action="content_toggle"></button>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <div class="card-block">
+                                <div class="row">
+                                  <div class="col-sm-5">
+                                    <div class="form-group" style="padding-top: 10px; display:none;">
+                                        <div class="col-md-12">
+                                            <div class="form-material">
+                                                <input class="js-datepicker form-control" type="text" id="txt-institute" name="txt-institute" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $valueUserinfo['institute_id']; ?>">
+                                                <label for="example-datepicker4">Start date <span style="color: red;">**</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-xs-12" for="login1-username">Start</label>
+                                        <div class="col-xs-12">
+                                          <input class="js-datepicker form-control" readonly type="text" id="txt-startdate" name="txt-startdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $start_date;?>">
+                                        </div>
+                                    </div>
+                                  </div>
 
+                                  <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="col-xs-12" for="login1-username">End</label>
+                                        <div class="col-xs-12">
+                                          <input class="js-datepicker form-control" readonly type="text" id="txt-enddate" name="txt-enddate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $end_date;?>">
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-2">
+                                    <div class="form-group" style="padding-top: 25px;">
+                                      <button class="btn btn-app-red btn-block" type="button" id="btn-calculate1">Calculate</button>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <div class="row">
 
-                            <div class="col-md-4">
-                                <!-- Filter -->
-                                <div class="card">
-                                    <div class="card-header bg-red bg-inverse">
-                                        <h3>Filter</h3>
-                                    </div>
-                                    <div class="card-block">
-                                      <form class="form-horizontal m-t-sm" action="base_forms_pickers_select.html" method="post" onsubmit="return false;">
-                                        <div class="form-group" style="padding-top: 10px;">
-                                            <div class="col-md-12">
-                                                <div class="form-material">
-                                                    <input class="js-datepicker form-control" type="text" id="txt-institute" name="txt-institute" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $valueUserinfo['institute_id']; ?>">
-                                                    <label for="example-datepicker4">Start date <span style="color: red;">**</span></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group" style="padding-top: 10px;">
-                                            <div class="col-md-12">
-                                                <div class="form-material">
-                                                    <input class="js-datepicker form-control" type="text" id="txt-startdate" name="txt-startdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $start_date; ?>">
-                                                    <label for="example-datepicker4">Start date <span style="color: red;">**</span></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group"  style="padding-top: 10px;">
-                                            <div class="col-md-12">
-                                                <div class="form-material">
-                                                    <input class="js-datepicker form-control" type="text" id="txt-enddate" name="txt-enddate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $end_date; ?>">
-                                                    <label for="example-datepicker5">End date <span style="color: red;">**</span></label>
-                                                </div>
-                                            </div>
-                                        </div>
 
 
-                                        <div class="form-group m-b-0">
-                                            <div class="col-md-12 text-right">
-                                                <button type="reset" class="btn btn-app-light" name="button">Reset</button>
-                                                <button class="btn btn-app" type="button" onclick="common_redirect()">Submit</button>
-                                            </div>
-                                        </div>
-
-
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- End filter -->
-                            </div>
-                            <!-- .col-lg-4 -->
-
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                               <div class="card">
                                   <div class="card-header bg-teal bg-inverse">
                                       <h3>The Robson ten-group classification system</h3>
@@ -190,8 +207,11 @@ $totalRob2 = 0; $totalRob4 = 0;
                                           <table class="table table-bordered table-condensed table-header-bg">
                                             <thead>
                                               <tr>
-                                                <th class="col-sm-6 text-center">
+                                                <th class="col-sm-2 text-center">
                                                   Classification
+                                                </th>
+                                                <th class="col-sm-5">
+                                                  Description
                                                 </th>
                                                 <th class="text-center">
                                                   No. of Cases
@@ -203,11 +223,22 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   1
                                                 </td>
+                                                <td>
+                                                  Nulliparous<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  In spontaneous labor
+                                                </td>
                                                 <td class="text-center">
-                                                  <div id="pg1" class="progress active" style="padding: 0px; margin: 0px;">
+                                                  <!-- <div id="pg1" class="progress active" style="padding: 0px; margin: 0px;">
                                                       <div id="progress-bar1" class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span id="loadLabel1">0%</span></div>
                                                   </div>
-                                                  <div id="pgr1" style="display:none;"></div>
+                                                  <div id="pgr1" style="display:none;"></div> -->
+                                                  <div id="loading1">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value1" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -215,11 +246,18 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   2
                                                 </td>
+                                                <td>
+                                                  Nulliparous<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  Induced labour or cesarean section before labour
+                                                </td>
                                                 <td class="text-center">
-                                                  <div id="pg2" class="progress active" style="padding: 0px; margin: 0px;">
-                                                      <div id="progress-bar2" class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span id="loadLabel2">0%</span></div>
+                                                  <div id="loading2">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
                                                   </div>
-                                                  <div id="pgr2" style="display:none;"></div>
+                                                  <div id="value2" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -227,8 +265,18 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   2a
                                                 </td>
+                                                <td>
+                                                  Nulliparous<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  Induced labour
+                                                </td>
                                                 <td class="text-center">
-                                                  <?php //include "componants/robson/robson-class2a.php"; ?>
+                                                  <div id="loading2a">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value2a" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -236,8 +284,18 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   2b
                                                 </td>
+                                                <td>
+                                                  Nulliparous<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  Cesarean section befor labour
+                                                </td>
                                                 <td class="text-center">
-                                                  <?php //include "componants/robson/robson-class2b.php"; ?>
+                                                  <div id="loading2b">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value2b" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -245,11 +303,18 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   3
                                                 </td>
+                                                <td>
+                                                  Multiparous (excluding previous cesarean section)<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  In spontaneous labor
+                                                </td>
                                                 <td class="text-center">
-                                                  <div id="pg3" class="progress active" style="padding: 0px; margin: 0px;">
-                                                      <div id="progress-bar3" class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span id="loadLabel3">0%</span></div>
+                                                  <div id="loading3">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
                                                   </div>
-                                                  <div id="pgr3" style="display:none;"></div>
+                                                  <div id="value3" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -257,17 +322,31 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   4
                                                 </td>
+                                                <td>
+                                                  Multiparous (excluding previous cesarean section)<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  Induced labour or cesarean section before labour
+                                                </td>
                                                 <td class="text-center">
-                                                  <div id="pg4" class="progress active" style="padding: 0px; margin: 0px;">
-                                                      <div id="progress-bar4" class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span id="loadLabel4">0%</span></div>
+                                                  <div id="loading4">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
                                                   </div>
-                                                  <div id="pgr4" style="display:none;"></div>
+                                                  <div id="value4" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
                                               <tr>
                                                 <td class="text-center">
                                                   4a
+                                                </td>
+                                                <td>
+                                                  Multiparous (excluding previous cesarean section)<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  Induced labour
                                                 </td>
                                                 <td class="text-center">
                                                   <?php //include "componants/robson/robson-class4a.php"; ?>
@@ -278,6 +357,13 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   4b
                                                 </td>
+                                                <td>
+                                                  Multiparous (excluding previous cesarean section)<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation<br>
+                                                  Cesarean section befor labour
+                                                </td>
                                                 <td class="text-center">
                                                   <?php //include "componants/robson/robson-class4b.php"; ?>
                                                 </td>
@@ -287,11 +373,17 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   5
                                                 </td>
+                                                <td>
+                                                  Previous cesarean section<br>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  >= 37 week's gestation
+                                                </td>
                                                 <td class="text-center">
-                                                  <div id="pg5" class="progress active" style="padding: 0px; margin: 0px;">
-                                                      <div id="progress-bar5" class="progress-bar progress-bar-primary progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"><span id="loadLabel5">0%</span></div>
+                                                  <div id="loading5">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
                                                   </div>
-                                                  <div id="pgr5" style="display:none;"></div>
+                                                  <div id="value5" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -299,8 +391,15 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   6
                                                 </td>
+                                                <td>
+                                                  Nulliparous<br>
+                                                  Single breech
+                                                </td>
                                                 <td class="text-center">
-                                                  <?php //include "componants/robson/robson-class6.php"; ?>
+                                                  <div id="loading6">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value6" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -308,8 +407,15 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   7
                                                 </td>
+                                                <td>
+                                                  Multiparous<br>
+                                                  Single breech
+                                                </td>
                                                 <td class="text-center">
-                                                  <?php //include "componants/robson/robson-class7.php"; ?>
+                                                  <div id="loading7">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value7" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -317,8 +423,14 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   8
                                                 </td>
+                                                <td>
+                                                  Multiple pregnancies
+                                                </td>
                                                 <td class="text-center">
-                                                  <?php //include "componants/robson/robson-class8.php"; ?>
+                                                  <div id="loading8">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value8" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -326,8 +438,15 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   9
                                                 </td>
+                                                <td>
+                                                  Singleton<br>
+                                                  Transverse or oblique lie
+                                                </td>
                                                 <td class="text-center">
-                                                  <?php //include "componants/robson/robson-class9.php"; ?>
+                                                  <div id="loading9">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value9" style="display:none;"></div>
                                                 </td>
                                               </tr>
 
@@ -335,8 +454,16 @@ $totalRob2 = 0; $totalRob4 = 0;
                                                 <td class="text-center">
                                                   10
                                                 </td>
+                                                <td>
+                                                  Singleton<br>
+                                                  Cephalic<br>
+                                                  < 37  week's gestation
+                                                </td>
                                                 <td class="text-center">
-                                                  <?php //include "componants/robson/robson-class10.php"; ?>
+                                                  <div id="loading10">
+                                                    <img src="../images/loading_animation.gif" alt="" width="50" />
+                                                  </div>
+                                                  <div id="value10" style="display:none;"></div>
                                                 </td>
                                               </tr>
                                             </tbody>
@@ -379,6 +506,7 @@ $totalRob2 = 0; $totalRob4 = 0;
 
 
         <!-- Page JS Plugins -->
+        <script src="../library/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 
         <!-- Page JS Code -->
@@ -389,6 +517,20 @@ $totalRob2 = 0; $totalRob4 = 0;
             {
                 // Init page helpers (BS Datepicker + BS Colorpicker + Select2 + Masked Input + Tags Inputs plugins)
                 App.initHelpers(['datepicker']);
+                $('#btn-calculate1').click(function(){
+                  var x = new Date($('#txt-startdate').val());
+                  var y = new Date($('#txt-enddate').val());
+
+                  if(x <= y){
+
+                    window.location = 'Robson-classification.php?start=' + $('#txt-startdate').val() + '&end=' + $('#txt-enddate').val();
+                  }else{
+                    // alert('Invalid date');
+                    swal('Invalid date range!');
+                  }
+
+                });
+
             });
 
             function common_redirect(){
@@ -400,221 +542,130 @@ $totalRob2 = 0; $totalRob4 = 0;
           $rob1 = 0; $rob2 = 0; $rob3 = 0; $rob4 = 0; $rob5 = 0;
           $(document).ready(function(){
             // iniInterval($i);
-            loadBar1($i);
-            setTimeout(function(){
-              loadBar2($j);
-            }, 300);
-
-            setTimeout(function(){
-              loadBar3($k);
-            }, 600);
-
-            setTimeout(function(){
-              loadBar4($l);
-            }, 900);
-
-            setTimeout(function(){
-              loadBar5($m);
-            }, 200);
-
-            loadGroup1();
-            loadGroup2();
-            loadGroup3();
-            loadGroup4();
-            loadGroup5();
+            loading1_case1();
+            loading1_case2();
+            loading1_case2a();
+            loading1_case2b();
+            loading1_case3();
+            loading1_case4();
+            loading1_case5();
+            loading1_case6();
+            loading1_case7();
+            loading1_case8();
+            loading1_case9();
+            loading1_case10();
 
           });
 
-          function loadBar1(i){
-            $('#progress-bar1').css('width', i+'%').attr('aria-valuenow', i);
-            $('#loadLabel1').text(((i)-1 )+ '%');
-            $i++;
-            iniInterval1($i);
-          }
-
-          function loadBar2(j){
-            $('#progress-bar2').css('width', j+'%').attr('aria-valuenow', j);
-            $('#loadLabel2').text(((j)-1 )+ '%');
-            $j++;
-            iniInterval2($j);
-          }
-
-          function loadBar3(k){
-            $('#progress-bar3').css('width', k+'%').attr('aria-valuenow', k);
-            $('#loadLabel3').text(((k)-1 )+ '%');
-            $k++;
-            iniInterval3($k);
-          }
-
-          function loadBar4(l){
-            $('#progress-bar4').css('width', l+'%').attr('aria-valuenow', l);
-            $('#loadLabel4').text(((l)-1 )+ '%');
-            $l++;
-            iniInterval4($l);
-          }
-
-          function loadBar5(m){
-            $('#progress-bar5').css('width', m+'%').attr('aria-valuenow', m);
-            $('#loadLabel5').text(((m)-1 )+ '%');
-            $m++;
-            iniInterval5($m);
-          }
-
-          function loadGroup1(){
-            var jqxhr = $.post( "componants/robson_service/robson-class1.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function() {});
-
-            jqxhr.done(function() {
-              $('#progress-bar1').css('width', '60%').attr('aria-valuenow', '60');
-              $('#loadLabel1').text('60%');
-              $rob1 = 1;
-              $i = 60;
-            });
-
+          function loading1_case1(){
+            var jqxhr = $.post( "componants/robson_service/robson-class1.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
             jqxhr.always(function(result) {
-              $('#progress-bar1').css('width', '100%').attr('aria-valuenow', '100');
-              $('#loadLabel1').text('100%');
-              $rob1 = 2;
-              $i = 100;
-              setTimeout(function(){
-                $('#pg1').hide();
-                $('#pgr1').show();
-                $('#pgr1').text(result);
-              },500);
-
+              $('#loading1').hide();
+              $('#value1').show();
+              $('#value1').text(result);
             });
           }
 
-          function loadGroup2(){
-            var jqxhr = $.post( "componants/robson_service/robson-class2.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function() {});
-
-            jqxhr.done(function() {
-              $('#progress-bar2').css('width', '60%').attr('aria-valuenow', '60');
-              $('#loadLabel2').text('60%');
-              $rob2 = 1;
-              $j = 60;
-            });
-
+          function loading1_case2(){
+            var jqxhr = $.post( "componants/robson_service/robson-class2.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
             jqxhr.always(function(result) {
-              $('#progress-bar2').css('width', '100%').attr('aria-valuenow', '100');
-              $('#loadLabel2').text('100%');
-              $rob2 = 2;
-              $j = 100;
-              setTimeout(function(){
-                $('#pg2').hide();
-                $('#pgr2').show();
-                $('#pgr2').text(result);
-              },500);
+              $('#loading2').hide();
+              $('#value2').show();
+              $('#value2').text(result);
             });
           }
 
-          function loadGroup3(){
-            var jqxhr = $.post( "componants/robson_service/robson-class3.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function() {});
-
-            jqxhr.done(function() {
-              $('#progress-bar3').css('width', '60%').attr('aria-valuenow', '60');
-              $('#loadLabel3').text('60%');
-              $rob3 = 1;
-              $k = 60;
-            });
-
+          function loading1_case2a(){
+            var jqxhr = $.post( "componants/robson_service/robson-class2a.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
             jqxhr.always(function(result) {
-              $('#progress-bar3').css('width', '100%').attr('aria-valuenow', '100');
-              $('#loadLabel3').text('100%');
-              $rob3 = 2;
-              $k = 100;
-              setTimeout(function(){
-                $('#pg3').hide();
-                $('#pgr3').show();
-                $('#pgr3').text(result);
-              },500);
+              $('#loading2a').hide();
+              $('#value2a').show();
+              $('#value2a').text(result);
             });
           }
 
-          function loadGroup4(){
-            var jqxhr = $.post( "componants/robson_service/robson-class4.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function() {});
-
-            jqxhr.done(function() {
-              $('#progress-bar4').css('width', '60%').attr('aria-valuenow', '60');
-              $('#loadLabel4').text('60%');
-              $rob4 = 1;
-              $l = 60;
-            });
-
+          function loading1_case2b(){
+            var jqxhr = $.post( "componants/robson_service/robson-class2b.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
             jqxhr.always(function(result) {
-              $('#progress-bar4').css('width', '100%').attr('aria-valuenow', '100');
-              $('#loadLabel4').text('100%');
-              $rob4 = 2;
-              $l = 100;
-              setTimeout(function(){
-                $('#pg4').hide();
-                $('#pgr4').show();
-                $('#pgr4').text(result);
-              },500);
+              $('#loading2b').hide();
+              $('#value2b').show();
+              $('#value2b').text(result);
             });
           }
 
-          function loadGroup5(){
-            var jqxhr = $.post( "componants/robson_service/robson-class5.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function() {});
-
-            jqxhr.done(function() {
-              $('#progress-bar5').css('width', '60%').attr('aria-valuenow', '60');
-              $('#loadLabel5').text('60%');
-              $rob5 = 1;
-              $m = 60;
-            });
-
+          function loading1_case3(){
+            var jqxhr = $.post( "componants/robson_service/robson-class3.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
             jqxhr.always(function(result) {
-              $('#progress-bar5').css('width', '100%').attr('aria-valuenow', '100');
-              $('#loadLabel5').text('100%');
-              $rob5 = 2;
-              $m = 100;
-              setTimeout(function(){
-                $('#pg5').hide();
-                $('#pgr5').show();
-                $('#pgr5').text(result);
-              },500);
+              $('#loading3').hide();
+              $('#value3').show();
+              $('#value3').text(result);
             });
           }
 
-          function iniInterval1(i){
-            setTimeout(function(){
-              if($rob1 != 2){
-                loadBar1($i);
-              }
-            },1000);
+          function loading1_case4(){
+            var jqxhr = $.post( "componants/robson_service/robson-class4.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
+            jqxhr.always(function(result) {
+              $('#loading4').hide();
+              $('#value4').show();
+              $('#value4').text(result);
+            });
           }
 
-          function iniInterval2(j){
-            setTimeout(function(){
-              if($rob2 != 2){
-                loadBar2($j);
-              }
-            },1000);
+          function loading1_case5(){
+            var jqxhr = $.post( "componants/robson_service/robson-class5.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
+            jqxhr.always(function(result) {
+              $('#loading5').hide();
+              $('#value5').show();
+              $('#value5').text(result);
+            });
           }
 
-          function iniInterval3(k){
-            setTimeout(function(){
-              if($rob3 != 2){
-                loadBar3($k);
-              }
-            },1000);
+          function loading1_case6(){
+            var jqxhr = $.post( "componants/robson_service/robson-class6.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
+            jqxhr.always(function(result) {
+              $('#loading6').hide();
+              $('#value6').show();
+              $('#value6').text(result);
+            });
           }
 
-          function iniInterval4(k){
-            setTimeout(function(){
-              if($rob4 != 2){
-                loadBar4($l);
-              }
-            },1000);
+          function loading1_case7(){
+            var jqxhr = $.post( "componants/robson_service/robson-class7.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
+            jqxhr.always(function(result) {
+              $('#loading7').hide();
+              $('#value7').show();
+              $('#value7').text(result);
+            });
           }
 
-          function iniInterval5(m){
-            setTimeout(function(){
-              if($rob5 != 2){
-                loadBar5($m);
-              }
-            },1000);
+          function loading1_case8(){
+            var jqxhr = $.post( "componants/robson_service/robson-class8.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
+            jqxhr.always(function(result) {
+              $('#loading8').hide();
+              $('#value8').show();
+              $('#value8').text(result);
+            });
           }
+
+          function loading1_case9(){
+            var jqxhr = $.post( "componants/robson_service/robson-class9.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
+            jqxhr.always(function(result) {
+              $('#loading9').hide();
+              $('#value9').show();
+              $('#value9').text(result);
+            });
+          }
+
+          function loading1_case10(){
+            var jqxhr = $.post( "componants/robson_service/robson-class10.php", { start_date : $('#txt-startdate').val(), end_date : $('#txt-enddate').val(), institute: $('#txt-institute').val()},function(result) {});
+            jqxhr.always(function(result) {
+              $('#loading10').hide();
+              $('#value10').show();
+              $('#value10').text(result);
+            });
+          }
+
+
         </script>
         <script type="text/javascript">
           var LoadData = function(){
@@ -629,7 +680,7 @@ $totalRob2 = 0; $totalRob4 = 0;
           }
 
           jQuery( function() {
-            LoadData.init();
+            // LoadData.init();
           });
         </script>
 

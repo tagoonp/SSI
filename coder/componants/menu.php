@@ -16,6 +16,10 @@
         </li>
 
         <li class="nav-item">
+            <a href="uc-record.php"><i class="fa fa-bars"></i> Un-confirm list</a>
+        </li>
+        
+        <li class="nav-item">
             <a href="search-record.php"><i class="ion-search"></i> Search patient</a>
         </li>
 
@@ -48,10 +52,10 @@
             </li>
         </li>
 
-        <li class="nav-item nav-drawer-header">Other function</li>
+        <!-- <li class="nav-item nav-drawer-header">Other function</li>
         <li class="nav-item">
             <a href="frontend_home.html"><i class="fa fa-envelope-o"></i> Send message to admin</a>
-        </li>
+        </li> -->
 
         <li class="nav-item nav-drawer-header">Closing</li>
         <li class="nav-item">

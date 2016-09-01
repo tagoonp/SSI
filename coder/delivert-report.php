@@ -4,13 +4,22 @@ include "../database/database.class.php";
 include "../dist/function/session.inc.php";
 include "../dist/function/checkuser.inc.php";
 
-$start_date = date('Y')."-01-01";
+$start_date = date('Y-m')."-01";
 // $start_date = "2015-01-01";
 $end_date = date('Y-m')."-31";
 // $end_date = "2015-12-31";
 
-if(isset($_GET['startdate'])){ $start_date = $_GET['startdate']; }
-if(isset($_GET['enddate'])){ $end_date = $_GET['enddate']; }
+if(isset($_GET['start'])){
+  if($_GET['start']!=''){
+    $start_date = $_GET['start'];
+  }
+}
+
+if(isset($_GET['end'])){
+  if($_GET['end']!=''){
+    $end_date = $_GET['end'];
+  }
+}
 
 $totalLivebirth = 0;
 $totalStillbirth = 0;
@@ -96,13 +105,13 @@ $totalAOD = 0;
                         					<span class="icon-bar"></span>
                         				</button>
                                 <span class="navbar-page-title">
-                        					Dashboard
+                        					Delivery data report
                         				</span>
                             </div>
 
                             <div class="collapse navbar-collapse" id="header-navbar-collapse">
                                 <!-- Header search form -->
-                                <form class="navbar-form navbar-left app-search-form" role="search">
+                                <!-- <form class="navbar-form navbar-left app-search-form" role="search">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <input class="form-control" type="search" id="search-input" placeholder="Patient's keyword" />
@@ -111,7 +120,7 @@ $totalAOD = 0;
                               							</span>
                                         </div>
                                     </div>
-                                </form>
+                                </form> -->
 
                                 <!-- .navbar-left -->
                                 <?php include "componants/nav-left.php"; ?>
@@ -130,54 +139,50 @@ $totalAOD = 0;
                     <!-- Page Content -->
                     <div class="container-fluid p-y-md">
                         <!-- .row -->
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="card">
+                              <div class="card-header bg-teal bg-inverse">
+                                  <h4><i class="fa fa-search"></i> Filter</h4>
+                                  <ul class="card-actions">
+                                      <li>
+                                          <button type="button" data-toggle="card-action" data-action="content_toggle"></button>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <div class="card-block">
+                                <div class="row">
+                                  <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="col-xs-12" for="login1-username">Start</label>
+                                        <div class="col-xs-12">
+                                          <input class="js-datepicker form-control" readonly type="text" id="txt-startdate" name="txt-startdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $start_date;?>">
+                                        </div>
+                                    </div>
+                                  </div>
 
+                                  <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="col-xs-12" for="login1-username">End</label>
+                                        <div class="col-xs-12">
+                                          <input class="js-datepicker form-control" readonly type="text" id="txt-enddate" name="txt-enddate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $end_date;?>">
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-2">
+                                    <div class="form-group" style="padding-top: 25px;">
+                                      <button class="btn btn-app-red btn-block" type="button" id="btn-calculate1">Calculate</button>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <div class="row">
 
-                            <div class="col-lg-12">
-                                <!-- Filter -->
-                                <div class="card">
-                                    <div class="card-header bg-red bg-inverse">
-                                        <h3>Filter</h3>
-                                    </div>
-                                    <div class="card-block">
-                                      <form class="form-horizontal m-t-sm" action="base_forms_pickers_select.html" method="post" onsubmit="return false;">
-                                        <div class="row">
-                                          <div class="col-sm-6">
-                                            <div class="form-group" style="padding-top: 10px;">
-                                                <div class="col-md-12">
-                                                    <div class="form-material">
-                                                        <input class="js-datepicker form-control" type="text" id="txt-startdate" name="txt-startdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $start_date; ?>">
-                                                        <label for="example-datepicker4">Start date <span style="color: red;">**</span></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                          </div>
-
-                                          <div class="col-sm-6">
-                                            <div class="form-group"  style="padding-top: 10px;">
-                                                <div class="col-md-12">
-                                                    <div class="form-material">
-                                                        <input class="js-datepicker form-control" type="text" id="txt-enddate" name="txt-enddate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $end_date; ?>">
-                                                        <label for="example-datepicker5">End date <span style="color: red;">**</span></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        <div class="form-group m-b-0">
-                                            <div class="col-md-12 text-right">
-                                                <button type="reset" class="btn btn-app-light" name="button">Reset</button>
-                                                <button class="btn btn-app" type="button" onclick="common_redirect()">Submit</button>
-                                            </div>
-                                        </div>
-
-
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- End filter -->
-                            </div>
-                            <!-- .col-lg-4 -->
 
                             <div class="col-lg-12">
                               <div class="card">
@@ -939,6 +944,7 @@ $totalAOD = 0;
 
 
         <!-- Page JS Plugins -->
+        <script src="../library/sweetalert/dist/sweetalert.min.js"></script>
         <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 
         <!-- Page JS Code -->
@@ -949,6 +955,20 @@ $totalAOD = 0;
             {
                 // Init page helpers (BS Datepicker + BS Colorpicker + Select2 + Masked Input + Tags Inputs plugins)
                 App.initHelpers(['datepicker']);
+
+                $('#btn-calculate1').click(function(){
+                  var x = new Date($('#txt-startdate').val());
+                  var y = new Date($('#txt-enddate').val());
+
+                  if(x <= y){
+
+                    window.location = 'delivert-report.php?start=' + $('#txt-startdate').val() + '&end=' + $('#txt-enddate').val();
+                  }else{
+                    // alert('Invalid date');
+                    swal('Invalid date range!');
+                  }
+
+                });
             });
 
             function common_redirect(){

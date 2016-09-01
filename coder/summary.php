@@ -3,6 +3,21 @@ session_start();
 include "../database/database.class.php";
 include "../dist/function/session.inc.php";
 include "../dist/function/checkuser.inc.php";
+
+$start_date = date('Y')."-01-01";
+$end_date = date('Y')."-12-31";
+
+if(isset($_GET['start'])){
+  if($_GET['start']!=''){
+    $start_date = $_GET['start'];
+  }
+}
+
+if(isset($_GET['end'])){
+  if($_GET['end']!=''){
+    $end_date = $_GET['end'];
+  }
+}
 ?>
 <!DOCTYPE html>
 
@@ -31,6 +46,7 @@ include "../dist/function/checkuser.inc.php";
         <!-- Page JS Plugins CSS -->
         <link rel="stylesheet" href="../assets/js/plugins/slick/slick.min.css" />
         <link rel="stylesheet" href="../assets/js/plugins/slick/slick-theme.min.css" />
+        <link rel="stylesheet" href="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css" />
 
         <!-- AppUI CSS stylesheets -->
         <link rel="stylesheet" id="css-font-awesome" href="../assets/css/font-awesome.css" />
@@ -83,13 +99,13 @@ include "../dist/function/checkuser.inc.php";
                         					<span class="icon-bar"></span>
                         				</button>
                                 <span class="navbar-page-title">
-                        					Dashboard
+                        					Summary report
                         				</span>
                             </div>
 
                             <div class="collapse navbar-collapse" id="header-navbar-collapse">
                                 <!-- Header search form -->
-                                <form class="navbar-form navbar-left app-search-form" role="search">
+                                <!-- <form class="navbar-form navbar-left app-search-form" role="search">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <input class="form-control" type="search" id="search-input" placeholder="Patient's keyword" />
@@ -98,7 +114,7 @@ include "../dist/function/checkuser.inc.php";
                               							</span>
                                         </div>
                                     </div>
-                                </form>
+                                </form> -->
 
                                 <!-- .navbar-left -->
                                 <?php include "componants/nav-left.php"; ?>
@@ -117,7 +133,48 @@ include "../dist/function/checkuser.inc.php";
                     <!-- Page Content -->
                     <div class="container-fluid p-y-md">
                         <!-- .row -->
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="card">
+                              <div class="card-header bg-teal bg-inverse">
+                                  <h4><i class="fa fa-search"></i> Filter</h4>
+                                  <ul class="card-actions">
+                                      <li>
+                                          <button type="button" data-toggle="card-action" data-action="content_toggle"></button>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <div class="card-block">
+                                <div class="row">
+                                  <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="col-xs-12" for="login1-username">Start</label>
+                                        <div class="col-xs-12">
+                                          <input class="js-datepicker form-control" readonly type="text" id="txt-startdate" name="txt-startdate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $start_date;?>">
+                                        </div>
+                                    </div>
+                                  </div>
 
+                                  <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label class="col-xs-12" for="login1-username">End</label>
+                                        <div class="col-xs-12">
+                                          <input class="js-datepicker form-control" readonly type="text" id="txt-enddate" name="txt-enddate" data-date-format="yyyy-mm-dd" placeholder="yyyy-mm-dd" value="<?php print $end_date;?>">
+                                        </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-2">
+                                    <div class="form-group" style="padding-top: 25px;">
+                                      <button class="btn btn-app-red btn-block" type="button" id="btn-calculate1">Calculate</button>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                         <div class="row">
 
                             <div class="col-lg-12">
@@ -513,21 +570,31 @@ include "../dist/function/checkuser.inc.php";
         <script src="../assets/js/app-custom.js"></script>
 
         <!-- Page Plugins -->
-        <script src="../assets/js/plugins/slick/slick.min.js"></script>
-        <script src="../assets/js/plugins/chartjs/Chart.min.js"></script>
-        <script src="../assets/js/plugins/flot/jquery.flot.min.js"></script>
-        <script src="../assets/js/plugins/flot/jquery.flot.pie.min.js"></script>
-        <script src="../assets/js/plugins/flot/jquery.flot.stack.min.js"></script>
-        <script src="../assets/js/plugins/flot/jquery.flot.resize.min.js"></script>
-
+        <script src="../library/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="../assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
         <!-- Page JS Code -->
-        <script src="../assets/js/pages/index.js"></script>
+        <!-- <script src="../assets/js/pages/index.js"></script> -->
 
         <script>
             $(function()
             {
                 // Init page helpers (Slick Slider plugin)
-                App.initHelpers('slick');
+                // App.initHelpers('slick');
+                App.initHelpers(['datepicker']);
+
+                $('#btn-calculate1').click(function(){
+                  var x = new Date($('#txt-startdate').val());
+                  var y = new Date($('#txt-enddate').val());
+
+                  if(x <= y){
+
+                    window.location = 'summary.php?start=' + $('#txt-startdate').val() + '&end=' + $('#txt-enddate').val();
+                  }else{
+                    // alert('Invalid date');
+                    swal('Invalid date range!');
+                  }
+
+                });
             });
         </script>
 
